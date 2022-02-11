@@ -1,3 +1,6 @@
+# Ignore MacOs files
+.DS_Store
+
 # SigNoz data volume
 data
 
