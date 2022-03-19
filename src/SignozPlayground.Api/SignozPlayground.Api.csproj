@@ -11,4 +11,13 @@
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\README.md">
+      <Link>README.md</Link>
+    </Content>
+    <Content Include="..\..\.gitignore">
+      <Link>.gitignore</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>
