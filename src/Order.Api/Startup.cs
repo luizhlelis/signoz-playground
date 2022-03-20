@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,8 +15,9 @@ using Microsoft.OpenApi.Models;
 using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Order.Api.Infrastructure;
 
-namespace SignozPlayground.Api
+namespace Order.Api
 {
     public class Startup
     {
@@ -44,10 +46,16 @@ namespace SignozPlayground.Api
 
             services.Configure<AspNetCoreInstrumentationOptions>(Configuration.GetSection("AspNetCoreInstrumentation"));
 
+            // Database
+            services.AddDbContext<OrderContext>(options =>
+                options
+                    .UseSqlServer(Configuration.GetConnectionString("OrderContext"))
+                    .LogTo(Console.WriteLine));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SignozPlayground.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Order.Api", Version = "v1" });
             });
         }
 
@@ -58,7 +66,7 @@ namespace SignozPlayground.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SignozPlayground.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Order.Api v1"));
             }
 
             app.UseHttpsRedirection();
