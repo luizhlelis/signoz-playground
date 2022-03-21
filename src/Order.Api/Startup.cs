@@ -37,6 +37,7 @@ namespace Order.Api
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
             services.AddOpenTelemetryTracing(builder => builder
                 .AddAspNetCoreInstrumentation()
+                .AddSqlClientInstrumentation(options => options.SetDbStatementForText = true)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(Configuration["Otlp:ServiceName"]))
                 .AddOtlpExporter(otlpOptions =>
                 {
