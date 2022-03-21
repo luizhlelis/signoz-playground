@@ -1,6 +1,15 @@
 version: "2.4"
 
 services:
+  sql-server-database:
+    container_name: sql-server-database
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      SA_PASSWORD: 1StrongPassword*
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+  
   clickhouse:
     image: yandex/clickhouse-server:21.12.3.32
     volumes:
