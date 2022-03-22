@@ -6,7 +6,7 @@ namespace Order.Api.Dtos
 {
     public class OrderDto
     {
-        public IEnumerable<Guid> ProductIds { get; set; }
+        public Dictionary<Guid, int> ProductIdsQuantity { get; set; }
         
         public Guid UserId { get; set; }
         

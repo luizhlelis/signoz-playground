@@ -30,7 +30,7 @@ namespace Order.Api.Controllers
                 DbContext = _dbContext
             };
 
-            await order.Create(orderDto.ProductIds.ToList());
+            await order.Create(orderDto.ProductIdsQuantity);
 
             return Created(Request.Path.Value, order);
         }

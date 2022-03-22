@@ -42,20 +42,23 @@ namespace Order.Api.Model
             PaymentForm = paymentForm;
         }
 
-        public async Task Create(List<Guid> productIds)
+        public async Task Create(Dictionary<Guid, int> productIdsQuantity)
         {
             DateTime = new DateTime();
+            Product currentProduct;
             
-            if (productIds == null)
+            if (productIdsQuantity == null)
                 return;
             
-            Products = await DbContext.Products.Where(product => productIds.Contains(product.Id)).ToListAsync();
+            var productIdsList = productIdsQuantity.Keys.ToList();
+
+            Products = await DbContext.Products.Where(product => productIdsList.Contains(product.Id)).ToListAsync();
 
             if (!Products.Any())
                 return;
 
-            foreach (var productId in productIds)
-                FullPrice += Products.First(product => productId == product.Id).Price;
+            foreach (var productIdQuantity in productIdsQuantity)
+                FullPrice += Products.First(product => productIdQuantity.Key == product.Id).Price * productIdQuantity.Value;
 
             DbContext.Orders.Add(this);
             await DbContext.SaveChangesAsync();
